@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/cursor.css" />
+  <link rel="stylesheet" href="css/cards.css" />
+  <link rel="stylesheet" href="css/ghost.css" />
+  <link rel="stylesheet" href="css/project-list.css" />
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.89/build/spline-viewer.js"></script>
+  <style>
+    :root { --text: #e5e7eb; }
+    body { font-family: 'Poppins', sans-serif; background: #000000; color: #e5e7eb; }
+    .content-wrap { max-width: 1200px; margin: 0 auto; padding: 6rem 2rem 4rem; position: relative; }
+    /* Shiny dark contact styles */
+    .nav-menu { padding: 1rem 2rem; }
+    .contact-section { padding-top: 14rem; padding-bottom: 3.5rem; }
+    .contact-section .section-title {
+      text-align: center;
+      display: block;
+      margin: 0 auto 2rem;
+      font-size: clamp(3.2rem, 8vw, 5rem);
+      letter-spacing: 1.5px;
+    }
+    .contact-card {
+      max-width: 600px;
+      margin: 0 auto;
+      background: linear-gradient(#0000, #0000) padding-box,
+                 linear-gradient(135deg, rgba(59,130,246,0.6), rgba(147,64,255,0.6)) border-box;
+      border: 1px solid transparent;
+      background-clip: padding-box, border-box;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 1.25rem;
+    }
+    .contact-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; max-width: 520px; margin: 0 auto; }
+    /* Input wrapper for floating labels and animated gradient borders */
+    .input-wrap {
+      position: relative;
+      border-radius: 14px;
+      padding: 2px; /* gradient border thickness */
+      background: linear-gradient(135deg, rgba(59,130,246,0.35), rgba(147,64,255,0.35));
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.4s ease;
+      overflow: hidden;
+    }
+    .input-wrap-inner {
+      position: relative;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(12px) saturate(120%);
+      -webkit-backdrop-filter: blur(12px) saturate(120%);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.14);
+      padding: 0.9rem 1rem 1.1rem;
+      overflow: hidden;
+    }
+    /* Subtle frosted texture overlay */
+    .input-wrap-inner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,0.02) 0,
+        rgba(255,255,255,0.02) 1px,
+        transparent 2px
+      );
+      opacity: 0.35;
+      mix-blend-mode: overlay;
+    }
+    /* Animated underline on focus */
+    .input-wrap-inner::after {
+      content: "";
+      position: absolute;
+      left: 12px; right: 12px; bottom: 8px;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #9340ff);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 300ms ease;
+      opacity: 0.9;
+    }
+    .input-wrap:focus-within .input-wrap-inner::after { transform: scaleX(1); }
+    /* Focus shine sweep */
+    @keyframes shineSweep {
+      0% { opacity: 0; transform: translateX(-40%) skewX(-12deg); }
+      50% { opacity: 0.25; }
+      100% { opacity: 0; transform: translateX(140%) skewX(-12deg); }
+    }
+    .input-wrap:focus-within .input-wrap-inner::before { animation: shineSweep 700ms ease; }
+    .input-label {
+      position: absolute;
+      left: 14px;
+      top: 12px;
+      font-size: 0.9rem;
+      color: #9ca3af;
+      pointer-events: none;
+      transition: transform 0.2s ease, opacity 0.2s ease, font-size 0.2s ease;
+      }
+    .input-wrap.filled .input-label,
+    .input-wrap:focus-within .input-label {
+      transform: translateY(-8px) scale(0.92);
+      opacity: 0.9;
+      color: #e5e7eb;
+    }
+    .contact-input {
+      width: 100%;
+      padding: 0.85rem 0.5rem 0.4rem;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      outline: none;
+      transition: box-shadow 0.25s ease, transform 0.2s ease;
+    }
+    .contact-input::placeholder { color: #9ca3af; }
+    .input-wrap:focus-within .input-wrap-inner {
+      border-color: rgba(99,102,241,0.55);
+      box-shadow: inset 0 1px 6px rgba(255,255,255,0.05), 0 10px 28px rgba(147,64,255,0.22);
+    }
+    .input-wrap:focus-within { transform: translateY(-1px) scale(1.005); filter: saturate(1.08); }
+
+    /* Entrance animation per field (staggered) */
+    @keyframes fieldIn {
+      0% { opacity: 0; transform: translateY(12px) scale(0.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .contact-grid .input-wrap { opacity: 0; animation: fieldIn 640ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .contact-grid .input-wrap:nth-child(1) { animation-delay: 0ms; }
+    .contact-grid .input-wrap:nth-child(2) { animation-delay: 120ms; }
+    .contact-grid .input-wrap:nth-child(3) { animation-delay: 240ms; }
+    .contact-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0.9rem 1.25rem;
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(135deg, #3b82f6, #9340ff);
+      box-shadow: 0 8px 24px rgba(147,64,255,0.25);
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .contact-button:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(147,64,255,0.35); }
+    .contact-button:active { transform: translateY(0); }
+
+    /* Smaller spline for contact */
+    .contact-spline { width: 100%; max-width: 720px; height: 360px; margin: 0 auto 16px; border-radius: 12px; overflow: hidden; }
+    .contact-socials { display: flex; justify-content: center; gap: 1.25rem; margin-top: 1rem; }
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(147,64,255,0.2));
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--text);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .social-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(147,64,255,0.25); border-color: rgba(147,64,255,0.45); }
+
+    /* Per-letter typing animation */
+    .type-stagger { display: inline-block; white-space: pre; }
+    .type-stagger span { display: inline-block; opacity: 0; transform: translateY(8px); animation: letterIn 0.5s ease forwards; }
+    @keyframes letterIn { to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <!-- Navigation Menu -->
+  <nav class="nav-menu">
+    <div class="logo text-white text-xl font-bold">Sairaj</div>
+    <ul>
+      <li><a href="index.html#home">Home</a></li>
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Exact Get in Touch section copied from homepage -->
+  <section id="contact" class="contact-section content-wrap">
+    <a href="index.html" class="back-btn">← Back</a>
+    <h2 class="section-title type-stagger">Get in Touch</h2>
+
+    <!-- Spline Scene -->
+    <div class="contact-spline scroll-animate-scale">
+      <spline-viewer url="https://prod.spline.design/yOWNXyWfn4jqzBVc/scene.splinecode"></spline-viewer>
+    </div>
+
+    <!-- Shiny Dark Contact Card -->
+    <div class="contact-card scroll-animate-scale">
+      <form class="contact-grid" action="mailto:your.email@gmail.com" method="post" enctype="text/plain">
+        <label class="input-wrap scroll-animate-scale">
+          <span class="input-label">Your Name</span>
+          <div class="input-wrap-inner">
+            <input type="text" name="name" placeholder="Your Name" class="contact-input" aria-label="Your Name" required>
+          </div>
+        </label>
+        <label class="input-wrap scroll-animate-scale">
+          <span class="input-label">Your Email</span>
+          <div class="input-wrap-inner">
+            <input type="email" name="email" placeholder="Your Email" class="contact-input" aria-label="Your Email" required>
+          </div>
+        </label>
+        <label class="input-wrap scroll-animate-scale">
+          <span class="input-label">Your Message</span>
+          <div class="input-wrap-inner">
+            <textarea name="message" placeholder="Your Message" rows="5" class="contact-input" aria-label="Your Message" required></textarea>
+          </div>
+        </label>
+        <button type="submit" class="contact-button scroll-animate-scale">Send Message</button>
+      </form>
+      <!-- Social Icons centered -->
+      <div class="contact-socials scroll-animate-scale">
+        <a href="https://linkedin.com/in/your-profile" target="_blank" class="social-btn" aria-label="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        </a>
+        <a href="mailto:your.email@gmail.com" class="social-btn" aria-label="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"/></svg>
+        </a>
+      </div>
+    </div>
+    <!-- Spacer for a more spacious layout -->
+    <div style="height: 64px;"></div>
+  </section>
+
+  <!-- Scroll Animations (optional) -->
+  <script src="js/scroll-animations.js"></script>
+  <script>
+    // Per-letter typing: wrap each letter in spans with staggered delays
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.type-stagger').forEach(el => {
+        const text = el.textContent;
+        el.textContent = '';
+        let delay = 0;
+        for (const ch of text) {
+          const span = document.createElement('span');
+          span.textContent = ch;
+          span.style.animationDelay = `${delay}s`;
+          delay += ch === ' ' ? 0.02 : 0.06;
+          el.appendChild(span);
+        }
+      });
+      // Floating labels: toggle 'filled' based on value
+      document.querySelectorAll('.input-wrap .contact-input').forEach(input => {
+        const wrap = input.closest('.input-wrap');
+        const toggle = () => {
+          wrap.classList.toggle('filled', !!input.value);
+        };
+        input.addEventListener('input', toggle);
+        input.addEventListener('focus', toggle);
+        input.addEventListener('blur', toggle);
+        toggle();
+      });
+    });
+  </script>
+</body>
+</html>

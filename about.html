@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - Sairaj</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/cursor.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="css/ghost.css">
+    <link rel="stylesheet" href="css/project-list.css">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.89/build/spline-viewer.js"></script>
+    <style>
+        :root { --text: #e5e7eb; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: #000000; 
+            color: #e5e7eb; 
+        }
+        .content-wrap { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 8rem 2rem 4.5rem; 
+            position: relative; 
+        }
+        
+        /* Header styles are standardized in style.css; remove page-specific header overrides */
+
+        /* About layout: spline left, text right */
+        .about-simple {
+            display: grid;
+            grid-template-columns: 60% 40%;
+            align-items: center;
+            gap: 3rem;
+            padding: 2rem 0;
+            min-height: 720px;
+        }
+        .about-left { position: relative; overflow: hidden; }
+        .about-left-frame {
+            position: relative;
+            transform-origin: left center;
+            transform: scale(1.12) translate(-12%, -8%); /* push model up and further left */
+            will-change: transform;
+        }
+        .about-left spline-viewer { width: 100%; height: 700px; display: block; }
+        .interact-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 144px; /* Increased by exactly 80% from 80px */
+            height: auto;
+            z-index: 10;
+        }
+            .about-text { max-width: 560px; }
+            .about-text p { font-size: 1.1rem; line-height: 1.6; color: #b0b0b0; margin-bottom: 1rem; }
+            /* Make About Me a prominent heading */
+            .about-text .section-title {
+                font-size: clamp(2.5rem, 8vw, 4.5rem);
+                font-weight: 800;
+                letter-spacing: -0.02em;
+                text-align: left;
+                margin-bottom: 1rem;
+            }
+
+        /* Per-letter typing animation */
+        .type-stagger { display: inline-block; white-space: pre; }
+        .type-stagger span { display: inline-block; opacity: 0; transform: translateY(8px); animation: letterIn 0.5s ease forwards; }
+        @keyframes letterIn { to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+        <div class="logo text-white text-xl font-bold">Sairaj</div>
+        <ul>
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#projects">Projects</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Back Button -->
+    <div class="content-wrap">
+        <a href="index.html" class="back-btn">← Back</a>
+        
+        <!-- About: spline left, text right -->
+        <section id="about" class="about-simple">
+            <div class="about-left">
+                <div class="about-left-frame scroll-animate-scale">
+                    <img src="images/interact.png" alt="Interact" class="interact-icon">
+                    <spline-viewer url="https://prod.spline.design/c3ZY2-bQpJLiS37Z/scene.splinecode"></spline-viewer>
+                </div>
+            </div>
+            <div class="about-text scroll-animate-scale">
+                <h2 class="section-title type-stagger">About Me</h2>
+                <p>I’m Sairaj, a game designer focused on building immersive, player‑centered experiences. I care deeply about clarity, flow, and how moment‑to‑moment interactions feel.</p>
+                <p>I blend UX thinking with systems design and rapid prototyping. My work spans solo games, mobile UI, icon sets, and playful interactions — always with an eye for readability and polish.</p>
+                <p>Tools I enjoy: Unity, Figma, Blender. When not designing, I explore small experiments, iterate quickly, and ship clean, thoughtful interfaces.</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scroll Animations (optional) -->
+    <script src="js/scroll-animations.js"></script>
+    <script src="js/cursor.js"></script>
+    <script>
+      // Per-letter typing for About Me
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.type-stagger').forEach(el => {
+          const text = el.textContent;
+          el.textContent = '';
+          let delay = 0;
+          for (const ch of text) {
+            const span = document.createElement('span');
+            span.textContent = ch;
+            span.style.animationDelay = `${delay}s`;
+            delay += ch === ' ' ? 0.02 : 0.06;
+            el.appendChild(span);
+          }
+        });
+      });
+    </script>
+</body>
+</html>

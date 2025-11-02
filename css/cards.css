@@ -1,0 +1,164 @@
+:root {
+    --bg: 25% 0.0075 70;
+    --pink: 77.75% 0.1003 350.51;
+    --gold: 84.16% 0.1169 71.19;
+    --mint: 84.12% 0.1334 165.28;
+    --mobile--w: 360px;
+    --mobile--h: 540px;
+    --outline-w: 9px;
+    --preview-bg: #fff;
+}
+
+.preview-cards {
+    padding: 3rem 2dvw;
+    background: linear-gradient(
+        50deg,
+        oklch(from oklch(var(--bg)) 50% c h),
+        oklch(from oklch(var(--bg)) 90% c h)
+    );
+}
+
+.card__container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    align-items: start;
+    perspective: 800px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.card {
+    position: relative;
+    background-color: rgba(10, 10, 10, 0.8);
+    border: 1px solid var(--accent);
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    border-radius: var(--radius);
+}
+
+.card--hero {
+    grid-column: span 3;
+    aspect-ratio: 16/9;
+}
+
+.card--vertical {
+    grid-column: span 2;
+    aspect-ratio: 9/16;
+}
+
+.card--small {
+    grid-column: span 1;
+    aspect-ratio: 1/1;
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.card:hover img {
+    transform: scale(1.05);
+}
+
+/* Background video, revealed on hover */
+.card-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+}
+.card:hover .card-video { opacity: 1; }
+
+/* Glitchy shaking effect */
+@keyframes glitch-shake {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  10%, 30%, 50%, 70%, 90% { transform: translate3d(-2px, 0, 0); }
+  20%, 40%, 60%, 80% { transform: translate3d(2px, 0, 0); }
+  5%, 25%, 45%, 65%, 85% { transform: translate3d(0, -2px, 0); }
+  15%, 35%, 55%, 75%, 95% { transform: translate3d(0, 2px, 0); }
+}
+.card:hover { animation: glitch-shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+
+/* Simple info overlay for title/description */
+.card__info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    color: white;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+.card:hover .card__info { opacity: 1; }
+.card__info h3 { margin: 0 0 0.5rem; font-size: 1.25rem; font-weight: 600; }
+.card__info p { margin: 0; font-size: 0.875rem; opacity: 0.85; }
+
+.card__content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    color: white;
+}
+
+.card__title {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.card__description {
+    margin: 0;
+    font-size: 0.875rem;
+    opacity: 0.8;
+}
+
+.card__tag {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.25rem 0.5rem;
+    background-color: var(--accent);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .card__container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .card--hero {
+        grid-column: span 2;
+    }
+    
+    .card--vertical {
+        grid-column: span 1;
+    }
+}
+
+@media (max-width: 480px) {
+    .card__container {
+        grid-template-columns: 1fr;
+    }
+    
+    .card--hero, .card--vertical, .card--small {
+        grid-column: span 1;
+    }
+}

@@ -1,0 +1,156 @@
+$bg-color: #161616;
+
+// Glitchy card effect
+.card {
+  position: relative;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+  
+  &:hover {
+    animation: glitch-shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    
+    .card-video {
+      opacity: 1;
+      z-index: 1;
+    }
+    
+    .card__info {
+      opacity: 1;
+      transform: translateY(0);
+      z-index: 2;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+    
+    &::before, &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 0, 128, 0.2);
+      z-index: 1;
+    }
+    
+    &::before {
+      animation: glitch-slide-1 0.3s infinite;
+      clip-path: polygon(0 20%, 100% 20%, 100% 21%, 0 21%);
+    }
+    
+    &::after {
+      animation: glitch-slide-2 0.3s infinite;
+      clip-path: polygon(0 70%, 100% 70%, 100% 72%, 0 72%);
+    }
+  }
+}
+
+// Video background
+.card-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+// Foreground text
+.card__info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: white;
+  transform: translateY(20px);
+  opacity: 0.8;
+  transition: all 0.3s ease;
+  z-index: 1;
+  
+  h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+  }
+  
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+}
+
+// Glitch animations
+@keyframes glitch-shake {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  10%, 30%, 50%, 70%, 90% { transform: translate3d(-2px, 0, 0); }
+  20%, 40%, 60%, 80% { transform: translate3d(2px, 0, 0); }
+  5%, 25%, 45%, 65%, 85% { transform: translate3d(0, -2px, 0); }
+  15%, 35%, 55%, 75%, 95% { transform: translate3d(0, 2px, 0); }
+}
+
+@keyframes glitch-slide-1 {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-10px); }
+}
+
+@keyframes glitch-slide-2 {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(10px); }
+}
+
+// Original ghost cursor styles
+.ghost {
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+    transform-origin: center;
+    width: 90px;
+    margin: 20px 0 0 -45px;
+    mix-blend-mode: difference;
+    opacity: 1;
+    
+    &__eyes,
+    &__mouth {
+        position: absolute;
+        z-index: 1;
+        width: 15px;
+        height: 15px;
+        top: 34px;
+        left: 50%;
+        transform: translate(-50%);
+        border-radius: 50px;
+        background: #fff;
+        margin-left: -20px;
+        transform-origin: center;
+        opacity: 1;
+    }
+    
+    &__eyes {
+        box-shadow: 40px 0 0 #fff;
+    }
+    
+    &__mouth {
+        margin: 0;
+        top: 60px;
+        transform: scale(0);
+        border-radius: 20px 20px 12px 12px;
+        width: 20px;
+        transform-origin: center bottom;
+        overflow: hidden;
+    }
+    
+    &__tail {
+        position: absolute;
+        z-index: -1;
+        top: 82px;
+        height: 55px;
+        width: 100%;
+        filter: url(#goo);
+    }
+}
