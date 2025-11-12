@@ -1,0 +1,399 @@
+/* Project List Styles */
+.projects-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--section-pad-x);
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* left: title, right: list */
+  gap: clamp(1.5rem, 4vw, 3rem); /* slightly tighter spacing between title and list */
+  align-items: start;
+}
+
+.projects-col-heading {
+  align-self: start;
+}
+
+.projects-col-list {
+  align-self: start;
+}
+
+.projects-list {
+  max-width: 1200px;
+  margin: 0;
+  padding: var(--projects-list-pad-y) 0 var(--projects-list-pad-y) 3rem; /* reduced axis gutter inside right column */
+  position: relative; /* allow axis absolute positioning */
+}
+
+.project-item {
+  position: relative;
+  padding: var(--project-item-pad-y) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  overflow: visible;
+}
+
+.project-item:last-child {
+  border-bottom: none;
+}
+
+.project-text {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  padding-left: 1rem;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.project-text h3 {
+  font-size: 2.5rem;
+  margin: 0;
+  font-weight: 600;
+  color: var(--text);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.project-text p {
+  margin: 0.5rem 0 0;
+  font-size: 1rem;
+  color: var(--muted);
+  max-width: 60%;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.project-media {
+  position: absolute;
+  right: 10%;
+  top: 50%;
+  transform: translate(50px, -50%);
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.circular-container {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  position: relative;
+}
+
+.project-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
+/* Image variant for project media (used for Investmates) */
+.project-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.1);
+  opacity: 0.95;
+  display: block;
+}
+
+.project-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+
+/* Hover Effects */
+.project-item:hover .project-text h3 {
+  color: var(--accent);
+  transform: translateX(5px);
+}
+
+.project-item:hover .project-text p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.project-item:hover .project-media {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+/* Play video on hover */
+.project-item:hover .project-video {
+  opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .projects-layout {
+    grid-template-columns: 1fr; /* stack */
+  }
+  .projects-col-heading { margin-bottom: 0.75rem; }
+  .project-text h3 {
+    font-size: 1.75rem;
+  }
+  
+  .project-text p {
+    max-width: 100%;
+  }
+  
+  .circular-container {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .project-media {
+    right: -50px;
+  }
+  .projects-list {
+    padding: 1rem 0.75rem 1rem 2.5rem; /* compact list padding on tablets */
+  }
+  
+  .project-item:hover .project-text h3 {
+    transform: translateX(10px);
+  }
+}
+
+@media (max-width: 480px) {
+  .project-text h3 {
+    font-size: 1.5rem;
+  }
+  
+  .circular-container {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .project-media {
+    right: -70px;
+  }
+  .projects-list {
+    padding-left: 2rem; /* slightly reduced left padding on mobile */
+  }
+}
+.projects-title {
+  max-width: 1200px;
+  margin: 0;
+  padding: 0;
+  font-size: clamp(3.5rem, 9vw, 6rem); /* very big font */
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.projects-subtitle {
+  margin-top: 1.25rem; /* increased spacing from title */
+  font-size: clamp(0.9rem, 2.2vw, 1.125rem);
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* Frosted glass button */
+.see-all-btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  color: var(--text);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px) saturate(1.2);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(99,102,241,0.35);
+  box-shadow: 0 0 18px rgba(99,102,241,0.25), inset 0 0 12px rgba(255,255,255,0.08);
+  transition: color 0.3s ease;
+}
+
+.see-all-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(99,102,241,0.0), rgba(99,102,241,0.35), rgba(59,130,246,0.6));
+  transform: translateX(-100%);
+  transition: transform 400ms ease;
+  z-index: -1;
+}
+
+.see-all-btn:hover {
+  color: #ffffff;
+  border-color: rgba(99,102,241,0.65);
+  box-shadow: 0 0 22px rgba(99,102,241,0.45), inset 0 0 14px rgba(255,255,255,0.12);
+}
+
+.see-all-btn:hover::before {
+  transform: translateX(0);
+}
+
+/* Vertical heading beside the axis */
+.projects-heading-vertical {
+  position: absolute;
+  top: 50%;
+  left: 1.5rem; /* align with axis position */
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: clamp(3rem, 8vw, 5rem); /* larger font */
+  font-weight: 900;
+  letter-spacing: 0.1em; /* breathing between vertical glyphs */
+  color: var(--text);
+  opacity: 0.95;
+  pointer-events: none;
+  user-select: none;
+  transform: translateY(-50%) rotate(180deg); /* invert and center */
+}
+
+@media (max-width: 768px) {
+  .projects-heading-vertical {
+    font-size: clamp(2rem, 7vw, 3rem);
+    left: 1.25rem;
+  }
+}
+
+/* Vertical axis and slime indicator */
+.projects-axis {
+  position: absolute;
+  left: 1.5rem; /* sits inside the extra left padding */
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom,
+    rgba(99,102,241,0.35), rgba(99,102,241,0.15));
+  border-radius: 2px;
+}
+
+.projects-indicator {
+  position: absolute;
+  left: -6px; /* center over the axis */
+  top: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  /* Slime bulb look */
+  background: radial-gradient(circle at 30% 30%,
+    rgba(99,102,241,0.9) 0%,
+    rgba(99,102,241,0.6) 40%,
+    rgba(99,102,241,0.3) 70%,
+    rgba(99,102,241,0.15) 100%);
+  box-shadow:
+    0 0 12px rgba(99,102,241,0.7),
+    0 0 28px rgba(99,102,241,0.35);
+  filter: url(#goo); /* use existing goo filter for organic edge */
+  will-change: transform;
+  transform-origin: center;
+}
+
+/* Ensure text has room and clean alignment */
+.project-text {
+  padding-left: 0.25rem; /* keep text close, axis has its own gutter */
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .projects-title {
+    padding: 0 1rem;
+    font-size: clamp(2rem, 7vw, 3rem);
+  }
+  .projects-list {
+    padding: 1.5rem 1rem 1.5rem 3rem;
+  }
+  .projects-axis {
+    left: 1rem;
+  }
+  .projects-indicator {
+    left: -5px;
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .projects-title {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+  }
+  .projects-list {
+    padding-left: 2.5rem;
+  }
+  .projects-axis {
+    left: 0.75rem;
+  }
+}
+/* Marquee graphics for Projects and Connect */
+.projects-graphic,
+.connect-graphic {
+  position: relative;
+  overflow: hidden;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--section-pad-x);
+  height: 160px;
+}
+
+.projects-graphic .marquee-track,
+.connect-graphic .marquee-track {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 0;
+  will-change: transform, filter;
+}
+
+.projects-graphic img,
+.connect-graphic img {
+  height: 140px;
+  width: auto;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.35));
+}
+
+/* Hover lens */
+.marquee-lens {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+  pointer-events: none;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.35), 0 0 18px rgba(99,102,241,0.35);
+  backdrop-filter: saturate(1.1);
+}
+
+.marquee-lens .lens-track {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 0;
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .projects-graphic,
+  .connect-graphic { height: 130px; }
+  .projects-graphic img,
+  .connect-graphic img { height: 110px; }
+  .marquee-lens { width: 110px; height: 110px; }
+}
+
+@media (max-width: 480px) {
+  .projects-graphic,
+  .connect-graphic { height: 110px; }
+  .projects-graphic img,
+  .connect-graphic img { height: 90px; }
+  .marquee-lens { width: 96px; height: 96px; }
+}

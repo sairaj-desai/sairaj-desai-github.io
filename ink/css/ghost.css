@@ -1,0 +1,152 @@
+.ghost {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  transform-origin: center;
+  width: 80px; /* Reduced from 120px */
+  height: 80px; /* Reduced from 120px */
+  margin: 20px 0 0 -40px; /* Adjusted center under cursor X */
+  --h: 200; /* starting hue */
+  filter: url(#goo);
+  background: radial-gradient(
+    circle at 40% 40%,
+    hsl(var(--h) 90% 92%),
+    hsl(var(--h) 90% 85%) 40%,
+    hsl(var(--h) 90% 75%)
+  );
+  border-radius: 60% 40% 55% 45% / 55% 50% 45% 60%;
+  box-shadow:
+    0 0 8px hsl(var(--h) 90% 70%), /* Reduced shadow size */
+    0 0 18px hsl(var(--h) 90% 60%), /* Reduced shadow size */
+    0 4px 12px rgba(0,0,0,0.12); /* Reduced shadow size */
+  animation: blobMorph 8s ease-in-out infinite, hueCycle 16s linear infinite; /* Slowed down animations */
+}
+
+/* Animate a CSS custom property for smooth hue changes */
+@property --h {
+  syntax: '<number>';
+  initial-value: 200;
+  inherits: false;
+}
+
+@keyframes hueCycle {
+  0% { --h: 0; }
+  50% { --h: 180; }
+  100% { --h: 360; }
+}
+
+.ghost__eyes {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 56%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ghost__eye {
+  width: 16px; /* Reduced from 22px */
+  height: 16px; /* Reduced from 22px */
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.06);
+  position: relative;
+  overflow: hidden; /* allow eyelid animation */
+  transform-origin: center;
+}
+
+.ghost__eye::after {
+  content: '';
+  position: absolute;
+  width: 6px; /* Reduced from 8px */
+  height: 6px; /* Reduced from 8px */
+  background: #222;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Eyelid for blink */
+.ghost__eye::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 0%;
+  /* eyelid uses blob hue, darker for visibility */
+  background: hsl(var(--h) 45% 25% / 0.85);
+  border-radius: 50%;
+  animation: blink 7s ease-in-out infinite;
+}
+
+/* Quick natural blinks at irregular intervals */
+@keyframes blink {
+  0%, 3%, 32%, 35%, 60%, 63%, 100% { height: 0%; }
+  4%, 5% { height: 100%; }
+  33%, 34% { height: 100%; }
+  61%, 62% { height: 100%; }
+}
+
+@keyframes blobMorph {
+  0% {
+    border-radius: 60% 40% 55% 45% / 55% 50% 45% 60%;
+  }
+  25% {
+    border-radius: 45% 55% 60% 40% / 50% 60% 40% 55%;
+  }
+  50% {
+    border-radius: 55% 45% 40% 60% / 60% 45% 55% 40%;
+  }
+  75% {
+    border-radius: 52% 48% 58% 42% / 48% 58% 42% 52%;
+  }
+  100% {
+    border-radius: 60% 40% 55% 45% / 55% 50% 45% 60%;
+  }
+}
+
+/* Mouth styles for open/close via transform */
+.ghost__mouth {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  transform: translateX(-50%) scale(0);
+  transform-origin: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: hsl(0 0% 15% / 0.95); /* dark inner mouth */
+  border: 3px solid hsl(var(--h) 90% 85% / 0.9); /* lip ring using blob hue */
+  box-shadow: 0 0 8px hsl(var(--h) 90% 70% / 0.35), inset 0 -6px 8px rgba(0,0,0,0.25);
+  overflow: visible;
+}
+
+/* Tongue that sticks out when mouth is open */
+.ghost__mouth::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%) scaleY(0);
+  width: 14px;
+  height: 16px;
+  background: hsl(350 90% 65%); /* tongue color */
+  border-radius: 0 0 7px 7px;
+  transform-origin: top center;
+  transition: transform 0.2s ease;
+  animation: tongue-wiggle 2s ease-in-out infinite;
+  display: block;
+}
+
+.ghost:hover .ghost__mouth::after {
+  transform: translateX(-50%) scaleY(1);
+}
+
+@keyframes tongue-wiggle {
+  0%, 100% { transform: translateX(-50%) scaleY(1); }
+  50% { transform: translateX(-50%) scaleY(0.8) translateY(2px); }
+}

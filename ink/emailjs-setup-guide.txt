@@ -1,0 +1,119 @@
+# Setting Up EmailJS for Your Portfolio Website
+
+## Step 1: Create an EmailJS Account
+1. Go to https://www.emailjs.com/ and sign up for a free account
+2. Verify your email address by clicking the link sent to your inbox
+
+## Step 2: Add an Email Service
+1. Log in to your EmailJS dashboard
+2. Click on "Email Services" in the left sidebar
+3. Click "Add New Service"
+4. Choose your email provider (Gmail, Outlook, Yahoo, etc.)
+5. Follow the authentication steps for your chosen provider
+6. Name your service (e.g., "portfolio-contact")
+7. Click "Create Service"
+
+## Step 3: Create an Email Template
+1. Go to "Email Templates" in the left sidebar
+2. Click "Create New Template"
+3. Name your template (e.g., "contact-form")
+4. Design your email template:
+   - Set the subject line (e.g., "New Contact from {{name}}")
+   - Create the email body using variables from your form:
+     ```
+     Name: {{name}}
+     Email: {{email}}
+     Message: {{message}}
+     ```
+5. Click "Save" to create your template
+
+## Step 4: Get Your User ID
+1. Go to "Account" → "API Keys"
+2. Copy your "Public Key" (you'll need this for the code)
+
+## Step 5: Add EmailJS to Your Website
+1. Add the EmailJS SDK to your contact.html file in the <head> section:
+   ```html
+   <script type="text/javascript" src="https://cdn.emailjs.com/sdk/2.6.4/email.min.js"></script>
+   <script type="text/javascript">
+     (function() {
+       emailjs.init("YOUR_USER_PUBLIC_KEY"); // Replace with your actual public key
+     })();
+   </script>
+   ```
+
+## Step 6: Update Your Contact Form
+1. Open contact.html and locate your form element
+2. Add an ID to your form if it doesn't have one:
+   ```html
+   <form id="contact-form" class="contact-grid">
+   ```
+3. Make sure your form inputs have name attributes that match your EmailJS template variables:
+   ```html
+   <input type="text" name="name" id="name" required>
+   <input type="email" name="email" id="email" required>
+   <textarea name="message" id="message" required></textarea>
+   ```
+
+## Step 7: Add JavaScript to Send Emails
+1. Add this JavaScript code before the closing </body> tag:
+   ```html
+   <script>
+     document.getElementById('contact-form').addEventListener('submit', function(event) {
+       event.preventDefault();
+       
+       // Show loading state
+       const submitBtn = document.querySelector('button[type="submit"]');
+       const originalBtnText = submitBtn.textContent;
+       submitBtn.textContent = 'Sending...';
+       submitBtn.disabled = true;
+       
+       // Send email using EmailJS
+       emailjs.sendForm(
+         'YOUR_SERVICE_ID', // Replace with your service ID (e.g., 'portfolio-contact')
+         'YOUR_TEMPLATE_ID', // Replace with your template ID (e.g., 'contact-form')
+         this
+       )
+         .then(function() {
+           // Success message
+           submitBtn.textContent = 'Message Sent!';
+           document.getElementById('contact-form').reset();
+           setTimeout(() => {
+             submitBtn.textContent = originalBtnText;
+             submitBtn.disabled = false;
+           }, 3000);
+         }, function(error) {
+           // Error handling
+           console.error('Email error:', error);
+           submitBtn.textContent = 'Error! Try Again';
+           setTimeout(() => {
+             submitBtn.textContent = originalBtnText;
+             submitBtn.disabled = false;
+           }, 3000);
+         });
+     });
+   </script>
+   ```
+
+## Step 8: Test Your Form
+1. Fill out your contact form and submit it
+2. Check that you receive the email at your connected email service
+3. Verify that all form data appears correctly in the email
+
+## Step 9: Customize (Optional)
+1. Add form validation
+2. Customize success/error messages
+3. Add a CAPTCHA for spam protection
+4. Style loading/success/error states
+
+## Troubleshooting
+- If emails aren't sending, check your browser console for errors
+- Verify your service ID and template ID are correct
+- Make sure your form field names match the template variables
+- Check your EmailJS dashboard for failed email logs
+
+## Usage Limits
+- Free plan: 200 emails per month
+- Paid plans available for higher volume needs
+
+For more information, visit the EmailJS documentation: https://www.emailjs.com/docs/
