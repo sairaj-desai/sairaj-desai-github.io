@@ -82,7 +82,7 @@
     justify-content: space-between;
     align-items: center;
     z-index: 100;
-    background: rgba(16, 18, 27, 0.35);
+    background: rgba(16, 18, 27, 0.5);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);

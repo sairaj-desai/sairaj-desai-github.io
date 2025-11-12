@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>All Projects</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="css/cursor.css" />
   <link rel="stylesheet" href="css/cards.css" />
@@ -15,56 +16,52 @@
     .page-header { max-width: 1200px; margin: 2rem auto 1rem; padding: 0 2rem; display: flex; align-items: baseline; justify-content: space-between; }
     .page-title { font-size: clamp(2rem, 6vw, 3rem); font-weight: 800; letter-spacing: -0.02em; }
     .page-sub { font-size: 1rem; color: var(--muted); }
-    .grid-wrap { max-width: 1200px; margin: 0 auto; padding: 0 2rem 4rem; position: relative; }
-    .card__container { grid-template-columns: repeat(2, 1fr); gap: clamp(1.5rem, 3vw, 2rem); }
-@media (max-width: 1200px) { .card__container { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 900px) { .card__container { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .card__container { grid-template-columns: 1fr; } }
+    .grid-wrap { max-width: 1440px; margin: 0 auto; padding: 8rem 2rem 4rem; position: relative; }
+    /* Masonry layout using CSS columns */
+    .masonry-grid {
+      column-count: 3;
+      column-gap: 1.25rem;
+    }
+    @media (max-width: 1200px) { .masonry-grid { column-count: 2; } }
+    @media (max-width: 900px)  { .masonry-grid { column-count: 2; } }
+    @media (max-width: 600px)  { .masonry-grid { column-count: 1; } }
+
+    .masonry-grid .card {
+      display: inline-block;
+      width: 100%;
+      margin-bottom: 1rem;
+      break-inside: avoid;
+    }
+
+    /* Aspect ratio classes */
+    .ratio-1-1 { aspect-ratio: 1 / 1; }
+    .ratio-4-3 { aspect-ratio: 4 / 3; }
+    .ratio-3-4 { aspect-ratio: 3 / 4; }
+    .ratio-16-9 { aspect-ratio: 16 / 9; }
+    .ratio-9-16 { aspect-ratio: 9 / 16; }
+    .ratio-3-2 { aspect-ratio: 3 / 2; }
+    .ratio-2-3 { aspect-ratio: 2 / 3; }
+
     /* Ensure videos sit under image until hover */
     .card { overflow: hidden; border-radius: 12px; position: relative; transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
     .card-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.3s ease; z-index: 0; }
     .card img { position: relative; z-index: 1; transition: opacity 0.3s ease; }
     .card:hover .card-video { opacity: 1; }
     .card:hover img { opacity: 0; }
+    /* Keep image on hover for cards marked as no-video */
+    .card.no-video:hover .card-video { opacity: 0; }
+    .card.no-video:hover img { opacity: 1; }
     /* Glitchy shake effect */
     @keyframes glitch-shake { 0%,100%{transform:translate3d(0,0,0)} 10%,30%,50%,70%,90%{transform:translate3d(-2px,0,0)} 20%,40%,60%,80%{transform:translate3d(2px,0,0)} 5%,25%,45%,65%,85%{transform:translate3d(0,-2px,0)} 15%,35%,55%,75%,95%{transform:translate3d(0,2px,0)} }
     .card:hover { animation: glitch-shake 0.5s cubic-bezier(.36,.07,.19,.97) both; transform: scale(1.02); }
     
-    .nav-menu {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        padding: 1.5rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        z-index: 100;
-        background: rgba(16, 18, 27, 0.35);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .nav-menu ul {
-        display: flex;
-        gap: 2rem;
-    }
-
-    .nav-menu a {
-        color: var(--text);
-        text-decoration: none;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.35);
-    }
-    /* Back button moved upward */
-    .back-btn { position: fixed; top: 0.75rem; left: 2rem; z-index: 101; }
+    /* Header uses standardized styles from style.css; remove page-specific overrides */
+    /* Back button positioning for this page */
+    body.all-projects-page .back-btn { position: static; margin-left: auto; }
 
     /* Banner title styling to match other pages */
     .banner h1 {
-      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-size: clamp(3rem, 9vw, 5.5rem);
       font-weight: 800;
       letter-spacing: -0.02em;
       color: var(--text);
@@ -74,15 +71,29 @@
     .banner {
       position: relative;
       overflow: hidden;
-      min-height: 100vh;
+      height: 100vh;
+      width: 100vw;
+      padding: 0;
+      margin: 0;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .spline-bg spline-viewer { width: 100%; height: 100%; display:block; }
+    .spline-bg { position: absolute; inset: 0; overflow: hidden; }
+    .spline-bg spline-viewer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100vw;
+      height: 100vh;
+      transform: translate(-50%, -50%) scale(1.5);
+      transform-origin: center;
+      display: block;
+      pointer-events: none; /* allow page scroll when hovering over Spline */
+    }
     /* Card info overlay */
-    .card__info { position: absolute; left: 0; bottom: 0; width: 100%; padding: 1rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: #fff; z-index: 2; opacity: 0.9; transition: opacity 0.3s ease, transform 0.3s ease; }
-    .card:hover .card__info { opacity: 1; transform: translateY(-5px); }
+    .card__info { position: absolute; left: 0; bottom: 0; width: 100%; padding: 1rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: #fff; z-index: 2; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; transform: translateY(10px); }
+    .card:hover .card__info { opacity: 1; transform: translateY(0); }
     .card__info h3 { margin: 0 0 0.5rem; font-size: 1.125rem; font-weight: 600; transition: transform 0.3s ease; }
     .card__info p { margin: 0; font-size: 0.9rem; opacity: 0.85; transition: transform 0.3s ease; }
     .card:hover .card__info h3 { transform: translateY(-2px); }
@@ -91,9 +102,65 @@
     .card__link { position: absolute; inset: 0; z-index: 3; }
 
     /* Wider, shorter cards for All Projects (page-scoped overrides) */
-    body.all-projects-page .card { max-width: none; aspect-ratio: 2 / 1; }
+    body.all-projects-page .card { max-width: none; }
     body.all-projects-page .card img,
     body.all-projects-page .card-video { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Filter bar: tabs left, back button right */
+    .filter-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
+    /* Filter tabs styling (frosty like back button) */
+    .filter-tabs { display: flex; justify-content: flex-start; gap: 0.75rem; }
+    .filter-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(99,102,241,0.35);
+      color: var(--text);
+      padding: 0.5rem 1.25rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px) saturate(1.2);
+      -webkit-backdrop-filter: blur(10px) saturate(1.2);
+      box-shadow: 0 0 18px rgba(99,102,241,0.25), inset 0 0 12px rgba(255,255,255,0.08);
+      background-clip: padding-box;
+    }
+    .filter-btn:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(99,102,241,0.65);
+      color: #ffffff;
+      box-shadow: 0 0 22px rgba(99,102,241,0.45), inset 0 0 14px rgba(255,255,255,0.12);
+    }
+    /* Animated frosted gradient for active tab */
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes frostGlow {
+      0%, 100% {
+        box-shadow: 0 0 18px rgba(99,102,241,0.25), inset 0 0 12px rgba(255,255,255,0.08);
+        filter: saturate(1.0) brightness(1.0);
+      }
+      50% {
+        box-shadow: 0 0 30px rgba(99,102,241,0.6), inset 0 0 16px rgba(255,255,255,0.14);
+        filter: saturate(1.15) brightness(1.1);
+      }
+    }
+    .filter-btn.active {
+      background: linear-gradient(135deg,
+        rgba(99,102,241,0.28),
+        rgba(255,255,255,0.12),
+        rgba(59,130,246,0.35)
+      );
+      background-size: 200% 200%;
+      border-color: rgba(99,102,241,0.75);
+      color: #ffffff;
+      animation: gradientShift 6s linear infinite, frostGlow 3s ease-in-out infinite;
+      box-shadow: 0 0 24px rgba(99,102,241,0.55), inset 0 0 14px rgba(255,255,255,0.12);
+    }
+    @media (max-width: 640px) {
+      .filter-bar { flex-wrap: wrap; }
+      body.all-projects-page .back-btn { margin-left: 0; }
+    }
   </style>
 </head>
 <body class="all-projects-page">
@@ -114,23 +181,29 @@
     <div class="spline-bg" style="position:absolute; inset:0; z-index:0;">
       <spline-viewer url="https://prod.spline.design/NpvtMl0f5ZeBhyD1/scene.splinecode"></spline-viewer>
     </div>
-    <div class="content" style="position:relative; z-index:1; text-align:center; width:100%;">
-      <h1 data-content="All Projects">All Projects</h1>
-    </div>
   </section>
 
   <main class="grid-wrap">
-    <a href="index.html" class="back-btn">← Back</a>
-    <div class="card__container">
+    <div class="filter-bar">
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="game-design">Game Design</button>
+        <button class="filter-btn" data-filter="ux">UX</button>
+      <button class="filter-btn" data-filter="art-work">Board Game</button>
+      </div>
+      <a href="index.html" class="back-btn">← Back</a>
+    </div>
+    <div class="masonry-grid">
+
       <!-- Card 1 -->
-      <div class="card" data-project="project1">
+      <div class="card no-video" data-project="project1" data-category="ux">
         <img src="Frontimage/IM 1.png" alt="Interactive Installation" />
         <video class="card-video" muted playsinline preload="metadata" loop>
           <source src="videos/dragon_1.mp4" type="video/mp4" />
         </video>
         <div class="card__info">
           <h3>InvestMates</h3>
-          <p>Museum exhibit with motion sensors and real-time interaction</p>
+          <p>Onboarding and journey walkthrough for Investmates </p>
           <div class="project-type">
             <span class="project-label">UX Design</span>
             <span class="project-timeline">2023</span>
@@ -140,110 +213,124 @@
       </div>
 
       <!-- Card 2 -->
-      <div class="card" data-project="project2">
+      <div class="card" data-project="project2" data-category="game-design">
         <img src="Frontimage/moti 1.png" alt="Mobile App Design" />
         <video class="card-video" muted playsinline preload="metadata" loop>
           <source src="videos/motii.mp4" type="video/mp4" />
         </video>
         <div class="card__info">
           <h3>Moti</h3>
-          <p>User interface for fitness tracking</p>
+          <p>A relaxing 3D world to explore and unwind</p>
           <div class="project-type">
-            <span class="project-label">UX Design</span>
-            <span class="project-timeline">2022</span>
+            <span class="project-label">Game Design</span>
+            <span class="project-timeline">2025</span>
           </div>
         </div>
          <a class="card__link" href="Moti.html" aria-label="Open Mobile App Design"></a>
       </div>
 
       <!-- Card 3 -->
-      <div class="card" data-project="project3">
+      <div class="card" data-project="project3" data-category="art-work">
         <img src="Frontimage/Board 1.png" alt="Brand Identity" />
         <video class="card-video" muted playsinline preload="metadata" loop>
-          <source src="videos/dragon_1.mp4" type="video/mp4" />
+          <source src="videos/how to play.mp4" type="video/mp4" />
         </video>
         <div class="card__info">
           <h3>Lab Genesis</h3>
-          <p>Tech startup branding</p>
+          <p>Board Game</p>
           <div class="project-type">
-            <span class="project-label">UX Design</span>
-            <span class="project-timeline">2022</span>
+            <span class="project-label">Board Design</span>
+            <span class="project-timeline">2024</span>
           </div>
         </div>
         <a class="card__link" href="board.html" aria-label="Open Brand Identity"></a>
       </div>
 
       <!-- Card 4 -->
-      <div class="card" data-project="project4">
+      <div class="card" data-project="project4" data-category="game-design">
         <img src="Frontimage/Afterlife1.png" alt="Icon Design" />
         <video class="card-video" muted playsinline preload="metadata" loop>
-          <source src="videos/Afterlife Redemption.mp4" type="video/mp4" />
+          <source src="videos/Afterlife.mp4" type="video/mp4" />
         </video>
         <div class="card__info">
           <h3>Afterlife Redemption</h3>
-          <p>Custom icon library</p>
+          <p>A fast, fun, and skill-based 2D platformer</p>
           <div class="project-type">
-            <span class="project-label">UX Design</span>
-            <span class="project-timeline">2021</span>
+            <span class="project-label">Game Design</span>
+            <span class="project-timeline">2024</span>
           </div>
         </div>
          <a class="card__link" href="Afterlife.html" aria-label="Open Icon Design"></a>
       </div>
 
       <!-- Card 5 -->
-      <div class="card" data-project="project5">
+      <div class="card" data-project="project5" data-category="game-design">
         <img src="Frontimage/fade1.png" alt="Web Platform" />
         <video class="card-video" muted playsinline preload="metadata" loop>
           <source src="videos/Fade.mp4" type="video/mp4" />
         </video>
         <div class="card__info">
           <h3>Fade</h3>
-          <p>E-commerce platform with custom CMS and analytics</p>
+          <p>A poetic, experiential game</p>
           <div class="project-type">
             <span class="project-label">Game Design</span>
-            <span class="project-timeline">2023</span>
+            <span class="project-timeline">2024</span>
           </div>
         </div>
         <a class="card__link" href="fade.html" aria-label="Open Web Platform"></a>
       </div>
 
       <!-- Card 6 -->
-      <div class="card" data-project="project6">
+      <div class="card" data-project="project6" data-category="game-design">
         <img src="Frontimage/Digitalden 1.png" alt="VR Experience" />
         <video class="card-video" muted playsinline preload="metadata" loop>
           <source src="videos/Digital.mp4" type="video/mp4" />
         </video>
         <div class="card__info">
           <h3>Digital Den</h3>
-          <p>Virtual reality training simulation</p>
+          <p>A mixture of puzzle, platformer, and click based solving game</p>
         </div>
         <a class="card__link" href="Digitalden.html" aria-label="Open VR Experience"></a>
       </div>
 
       <!-- Card 7 -->
-      <div class="card" data-project="project7">
+      <div class="card" data-project="project7" data-category="game-design">
         <img src="Frontimage/dn.png" alt="Data Visualization" />
         <video class="card-video" muted playsinline preload="metadata" loop>
-          <source src="videos/dragon_1.mp4" type="video/mp4" />
+          <source src="videos/Drunken.mp4" type="video/mp4" />
         </video>
         <div class="card__info">
           <h3>Drunken Night</h3>
-          <p>Interactive dashboard for real-time analytics</p>
+          <p>A goofy little 2D platformer</p>
         </div>
         <a class="card__link" href="DrunkenNight.html" aria-label="Open Data Visualization"></a>
       </div>
 
       <!-- Card 8 -->
-      <div class="card">
-        <img src="images/dragon_1.jpg" alt="Game Development" />
+     <div class="card no-video" data-project="project1" data-category="ux">
+        <img src="wasam/wasam 1.png" alt="UX Design" />
         <video class="card-video" muted playsinline preload="metadata" loop>
-          <source src="videos/dragon_1.mp4" type="video/mp4" />
+          <source src="videos/wasam.mp4" type="video/mp4" />
         </video>
         <div class="card__info">
-          <h3>Game Development</h3>
-          <p>Indie puzzle game with unique mechanics</p>
+          <h3>Wasam</h3>
+          <p>Enhancing Retirees' Digital Experience</p>
         </div>
-        <a class="card__link" href="project8.html" aria-label="Open Game Development"></a>
+        <a class="card__link" href="wasam.html" aria-label="Open UX Design"></a>
+      </div>
+
+      <!-- Card 9 -->
+      <div class="card no-video" data-project="project1" data-category="ux">
+        <img src="Nuclear/Nuclear 1.png" alt="Nuclear Project Cover" />
+        <div class="card__info">
+          <h3>Nucleo</h3>
+          <p>Designing Clarity for Patients Undergoing Nuclear Medicine Therapy</p>
+          <div class="project-type">
+            <span class="project-label">UX Design</span>
+            <span class="project-timeline">2025</span>
+          </div>
+        </div>
+        <a class="card__link" href="Nuclear.html" aria-label="Open Nuclear project"></a>
       </div>
     </div>
   </main>
@@ -298,6 +385,48 @@
   <!-- Slider Script -->
   <script src="script.js"></script>
   <script src="js/project-list.js"></script>
+  <script>
+    // Randomize card order and aspect ratios for a Pinterest-style masonry layout
+    document.addEventListener('DOMContentLoaded', function() {
+      const grid = document.querySelector('.masonry-grid');
+      const cards = Array.from(grid.querySelectorAll('.card'));
+      const ratios = ['ratio-1-1', 'ratio-4-3', 'ratio-3-4', 'ratio-16-9', 'ratio-9-16', 'ratio-3-2', 'ratio-2-3'];
+
+      // Shuffle cards
+      for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cards[i], cards[j]] = [cards[j], cards[i]];
+      }
+
+      // Re-append shuffled cards and assign random ratios
+      cards.forEach(card => {
+        const randomRatio = ratios[Math.floor(Math.random() * ratios.length)];
+        card.classList.add(randomRatio);
+        grid.appendChild(card);
+      });
+
+      // Filter logic
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          // Deactivate all buttons
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          // Activate the clicked button
+          button.classList.add('active');
+
+          const filter = button.dataset.filter;
+
+          cards.forEach(card => {
+            if (filter === 'all' || card.dataset.category === filter) {
+              card.style.display = 'block';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+    });
+  </script>
   <script>
     // Add video playback functionality to cards
     document.addEventListener('DOMContentLoaded', function() {

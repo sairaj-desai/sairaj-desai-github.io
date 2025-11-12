@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/cards.css">
     <link rel="stylesheet" href="css/ghost.css">
     <link rel="stylesheet" href="css/project-list.css">
-    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.89/build/spline-viewer.js"></script>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.0/build/spline-viewer.js"></script>
     <style>
         :root { --text: #e5e7eb; }
         body { 
@@ -28,30 +28,68 @@
         
         /* Header styles are standardized in style.css; remove page-specific header overrides */
 
-        /* About layout: spline left, text right */
+        /* About layout: force model visibility */
         .about-simple {
-            display: grid;
-            grid-template-columns: 60% 40%;
-            align-items: center;
-            gap: 3rem;
+            display: block;
             padding: 2rem 0;
-            min-height: 720px;
-        }
-        .about-left { position: relative; overflow: hidden; }
-        .about-left-frame {
             position: relative;
+        }
+        .about-left { 
+            width: 100%; 
+            height: 500px; /* Fixed height */
+            position: relative;
+            margin: 2rem 0;
+            overflow: visible;
+        }
+        .about-left-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .about-left spline-viewer { 
+            width: 100%; 
+            height: 100%; 
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translateX(-50%) scale(1.6); /* Shift 30% left, increase size by 30% */
             transform-origin: left center;
-            transform: scale(1.12) translate(-12%, -8%); /* push model up and further left */
             will-change: transform;
         }
-        .about-left spline-viewer { width: 100%; height: 700px; display: block; }
+        /* Overlay About section on top of the model, left-aligned but shifted right */
+        .about-left .about-text { 
+            position: absolute;
+            top: 1rem;
+            left: 55%; /* shift text box to the right */
+            margin: 0;
+            max-width: 40%;
+            text-align: left;
+            z-index: 5; /* above the model */
+        }
+        .about-text { 
+            max-width: 600px; 
+            margin: 520px auto 0 auto; /* Push text below the model */
+            text-align: center;
+        }
+        /* Black rectangle appended after About text */
+        .about-text .black-rect {
+            width: 170%;
+            height: 120px;
+            background: #000;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
         .interact-icon {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 144px; /* Increased by exactly 80% from 80px */
+            top: 10px;
+            right: 10px;
+            width: 150px; /* Further reduced size */
             height: auto;
             z-index: 10;
+            opacity: 0.8;
         }
             .about-text { max-width: 560px; }
             .about-text p { font-size: 1.1rem; line-height: 1.6; color: #b0b0b0; margin-bottom: 1rem; }
@@ -60,7 +98,7 @@
                 font-size: clamp(2.5rem, 8vw, 4.5rem);
                 font-weight: 800;
                 letter-spacing: -0.02em;
-                text-align: left;
+                text-align: center;
                 margin-bottom: 1rem;
             }
 
@@ -91,14 +129,18 @@
             <div class="about-left">
                 <div class="about-left-frame scroll-animate-scale">
                     <img src="images/interact.png" alt="Interact" class="interact-icon">
-                    <spline-viewer url="https://prod.spline.design/c3ZY2-bQpJLiS37Z/scene.splinecode"></spline-viewer>
-                </div>
-            </div>
+                    <spline-viewer url="https://prod.spline.design/SkmylPpq5F7Wkk5V/scene.splinecode" loading="lazy">
+                        <p style="color: white; text-align: center; padding: 50px;">Loading 3D model...</p>
+                    </spline-viewer>
+                    <!-- Overlay About section on top of the model -->
             <div class="about-text scroll-animate-scale">
                 <h2 class="section-title type-stagger">About Me</h2>
-                <p>I’m Sairaj, a game designer focused on building immersive, player‑centered experiences. I care deeply about clarity, flow, and how moment‑to‑moment interactions feel.</p>
-                <p>I blend UX thinking with systems design and rapid prototyping. My work spans solo games, mobile UI, icon sets, and playful interactions — always with an eye for readability and polish.</p>
-                <p>Tools I enjoy: Unity, Figma, Blender. When not designing, I explore small experiments, iterate quickly, and ship clean, thoughtful interfaces.</p>
+                <p>I’m the kind of person who loves just watching the world the way people move, talk, or get lost in their own thoughts. That’s usually where i get my ideas. I’ve always found it fun that the wild, impossible things we can’t do in real life can come alive through games.</p>
+                <p>That’s where everything clicked for me turning crazy ideas into something you can play, feel, and laugh at with others.</p>
+                <p>And when I’m not making things, I’m probably deep into fanfictions or wandering outside, letting myself get kidnapped (just kidding, of course).</p>
+                <div class="black-rect"></div>
+            </div>
+                </div>
             </div>
         </section>
     </div>
